@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:vtest/notification_page.dart';
 import 'user_provider.dart';
 import 'login_page.dart';
 import 'symbol_page.dart';
@@ -15,10 +16,10 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    SymbolPage(), // This is your 'symbol_page.dart'
-    Center(child: Text('Notifications Page')), // Placeholder for Notifications
-    Center(child: Text('Call Page')), // Placeholder for Call
-    Center(child: Text('Settings Page')), // Placeholder for Settings
+    SymbolPage(),
+    NotificationPage(),
+    Center(child: Text('Call Page')),
+    Center(child: Text('Settings Page')),
   ];
 
   @override
@@ -33,14 +34,11 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () async {
-              // Clear user data (logout)
               userProvider.logout();
 
-              // Clear login state from shared_preferences
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.clear();
 
-              // Navigate back to the login page
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => LoginPage()),
               );
@@ -48,7 +46,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: _pages[_currentIndex], // Display content based on current index
+      body: _pages[_currentIndex],
       bottomNavigationBar: CurvedNavigationBar(
         index: _currentIndex,
         onTap: (index) {
@@ -56,11 +54,11 @@ class _HomePageState extends State<HomePage> {
             _currentIndex = index;
           });
         },
-        color: Colors.blue, // Background color of the navigation bar
-        buttonBackgroundColor: Colors.blueGrey, // Background color of the middle button
-        backgroundColor: Colors.transparent, // Background color of the entire bar
-        animationCurve: Curves.easeInOut, // Animation curve for the transition
-        animationDuration: Duration(milliseconds: 500), // Animation duration
+        color: Colors.blue, 
+        buttonBackgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.transparent,
+        animationCurve: Curves.easeInOut,
+        animationDuration: Duration(milliseconds: 500),
         items: <Widget>[
           Icon(Icons.home, size: 30, color: Colors.white),
           Icon(Icons.notifications, size: 30, color: Colors.white),
