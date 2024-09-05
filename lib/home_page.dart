@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
             _currentIndex = index;
           });
         },
-        color: Colors.blue, 
+        color: Colors.deepPurple, 
         buttonBackgroundColor: Colors.blueGrey,
         backgroundColor: Colors.transparent,
         animationCurve: Curves.easeInOut,
