@@ -54,42 +54,51 @@ class _CallPageState extends State<CallPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Call Page'),
+     
+      body: Container(
+        padding: EdgeInsets.all(16.0),
+        child: people.isEmpty
+            ? Center(
+                child: Text(
+                  'No one to call',
+                  style: TextStyle(
+                    color: Color(0xFF8AAAE5),
+                    fontSize: 18,
+                  ),
+                ),
+              )
+            : ListView(
+                children: people
+                    .map((person) =>
+                        _buildCallCard(person['name']!, person['ip']!))
+                    .toList(),
+              ),
       ),
-      body: people.isEmpty
-          ? Center(
-              child: Text('No one to call'),
-            )
-          : ListView(
-              children: people
-                  .map((person) =>
-                      _buildCallCard(person['name']!, person['ip']!))
-                  .toList(),
-            ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddPeopleBottomSheet,
-        child: Icon(Icons.add),
+        backgroundColor: Color(0xFF8AAAE5), // Light blue color
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 
   Widget _buildCallCard(String name, String ip) {
     return Card(
-      elevation: 4.0,
+      elevation: 6.0, // Increased elevation for better shadow
       margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0), // Rounded corners
+      ),
+      color: Colors.white, // Card background color
       child: Container(
         padding: EdgeInsets.all(16.0),
         child: Row(
           children: [
             CircleAvatar(
               radius: 24.0,
-              backgroundColor:
-                  Colors.blueGrey,
+              backgroundColor: Color(0xFF8AAAE5), // Light blue background
               child: Text(
-                name.isNotEmpty
-                    ? name[0]
-                    : '?',
+                name.isNotEmpty ? name[0] : '?',
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
               ),
             ),
@@ -106,6 +115,7 @@ class _CallPageState extends State<CallPage> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF227C9D), // Darker blue color
                         ),
                       ),
                       SizedBox(height: 8.0),
@@ -127,7 +137,7 @@ class _CallPageState extends State<CallPage> {
                     ],
                   ),
                   IconButton(
-                    icon: Icon(Icons.call, color: Colors.blue, size: 30.0),
+                    icon: Icon(Icons.call, color: Color(0xFF227C9D), size: 30.0), // Darker blue color
                     onPressed: () {
                       Navigator.push(
                         context,

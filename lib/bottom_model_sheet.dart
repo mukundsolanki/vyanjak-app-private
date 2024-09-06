@@ -29,10 +29,11 @@ class _AddPeopleBottomSheetState extends State<AddPeopleBottomSheet> {
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
+                  color: Color(0xFF227C9D), // Darker blue for text
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(Icons.close, color: Color(0xFF227C9D)), // Darker blue for icon
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -44,12 +45,17 @@ class _AddPeopleBottomSheetState extends State<AddPeopleBottomSheet> {
             controller: _nameController,
             decoration: InputDecoration(
               labelText: 'Enter name',
+              labelStyle: TextStyle(color: Color(0xFF227C9D)), // Darker blue for label
               border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF8AAAE5)), // Light blue for focused border
                 borderRadius: BorderRadius.circular(8.0),
               ),
               contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
             ),
-            style: TextStyle(fontSize: 16.0),
+            style: TextStyle(fontSize: 16.0, color: Color(0xFF227C9D)), // Darker blue for text
           ),
           SizedBox(height: 16.0),
           Row(
@@ -59,12 +65,17 @@ class _AddPeopleBottomSheetState extends State<AddPeopleBottomSheet> {
                   controller: _ipController,
                   decoration: InputDecoration(
                     labelText: 'Enter IP Address',
+                    labelStyle: TextStyle(color: Color(0xFF227C9D)), // Darker blue for label
                     border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF8AAAE5)), // Light blue for focused border
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                   ),
-                  style: TextStyle(fontSize: 16.0),
+                  style: TextStyle(fontSize: 16.0, color: Color(0xFF227C9D)), // Darker blue for text
                 ),
               ),
               SizedBox(width: 8.0),
@@ -80,15 +91,33 @@ class _AddPeopleBottomSheetState extends State<AddPeopleBottomSheet> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  padding: EdgeInsets.zero, // Remove default padding
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
+                  elevation: 6, // Add elevation for shadow
                 ),
-                child: Text(
-                  'Add',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF8AAAE5), Color(0xFFB0C4DE)], // Gradient background
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Add',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],

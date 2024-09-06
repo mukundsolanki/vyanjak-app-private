@@ -11,11 +11,16 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login via QR Code"),
+        title: Text("Login via QR Code",style:TextStyle(color:Colors.white)),
+        backgroundColor: Color(0xFF8AAAE5), // Enhanced color
       ),
       body: Center(
         child: ElevatedButton(
-          child: Text('Scan QR Code'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF8AAAE5),
+            foregroundColor:Colors.white, // Enhanced color
+          ),
+          child: Text('Scan QR Code',style:TextStyle(color:Colors.white)),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => QRScannerPage()),
@@ -40,6 +45,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Scan QR Code"),
+        backgroundColor: Color(0xFF8AAAE5), // Enhanced color
         actions: [
           IconButton(
             icon: Icon(
