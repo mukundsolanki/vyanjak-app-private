@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:vtest/call_page.dart';
 import 'package:vtest/notification_page.dart';
 import 'user_provider.dart';
 import 'login_page.dart';
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     SymbolPage(),
     NotificationPage(),
-    Center(child: Text('Call Page')),
+    CallPage(),
     Center(child: Text('Settings Page')),
   ];
 
