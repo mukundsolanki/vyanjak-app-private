@@ -43,6 +43,8 @@ dependencies:
   video_player: ^2.4.6
   flutter_webrtc: ^0.11.7
   image_picker: ^1.1.2
+  introduction_screen: ^3.1.14
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -68,20 +70,24 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/bus.png
-    - assets/four.png
-    - assets/one.png
-    - assets/two.png
-    - assets/three.png
-    - assets/teacher.png
-    - assets/medicine.png
-    - assets/guard.png
-    - assets/policeman.png
-    - assets/add-user.png
-    - assets/peon.png
-    - assets/meeting.png
-    - assets/dean.png
-    - assets/food.png
+    - assets/intro/welcome.png
+    - assets/intro/device.png
+    - assets/intro/scan.png
+    - assets/symbols/bus.png
+    - assets/symbols/four.png
+    - assets/symbols/one.png
+    - assets/symbols/two.png
+    - assets/symbols/three.png
+    - assets/symbols/teacher.png
+    - assets/symbols/medicine.png
+    - assets/symbols/guard.png
+    - assets/symbols/policeman.png
+    - assets/symbols/add-user.png
+    - assets/symbols/peon.png
+    - assets/symbols/meeting.png
+    - assets/symbols/dean.png
+    - assets/symbols/food.png
+    
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
