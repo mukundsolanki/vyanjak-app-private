@@ -11,20 +11,20 @@ class SymbolPage extends StatefulWidget {
 
 class _SymbolPageState extends State<SymbolPage> {
   final List<Map<String, dynamic>> items = [
-    {'image': 'assets/medicine.png', 'size': 70.0}, 
-    {'image': 'assets/bus.png', 'size': 70.0}, 
-    {'image': 'assets/guard.png', 'size': 80.0}, 
-    {'image': 'assets/teacher.png', 'size': 85.0}, 
-    {'image': 'assets/peon.png', 'size': 80.0},
-    {'image': 'assets/food.png', 'size': 60.0}, 
-    {'image': 'assets/dean.png', 'size': 70.0}, 
-    {'image': 'assets/policeman.png', 'size': 70.0}, 
-    {'image': 'assets/one.png', 'size': 40.0}, 
-    {'image': 'assets/two.png', 'size': 40.0}, 
-    {'image': 'assets/three.png', 'size': 40.0}, 
-    {'image': 'assets/four.png', 'size': 40.0},
-    {'image': 'assets/meeting.png', 'size': 70.0}, 
-    {'image': 'assets/add-user.png', 'size': 50.0}, 
+    {'image': 'assets/symbols/medicine.png', 'size': 70.0}, 
+    {'image': 'assets/symbols/bus.png', 'size': 70.0}, 
+    {'image': 'assets/symbols/guard.png', 'size': 80.0}, 
+    {'image': 'assets/symbols/teacher.png', 'size': 85.0}, 
+    {'image': 'assets/symbols/peon.png', 'size': 80.0},
+    {'image': 'assets/symbols/food.png', 'size': 60.0}, 
+    {'image': 'assets/symbols/dean.png', 'size': 70.0}, 
+    {'image': 'assets/symbols/policeman.png', 'size': 70.0}, 
+    {'image': 'assets/symbols/one.png', 'size': 40.0}, 
+    {'image': 'assets/symbols/two.png', 'size': 40.0}, 
+    {'image': 'assets/symbols/three.png', 'size': 40.0}, 
+    {'image': 'assets/symbols/four.png', 'size': 40.0},
+    {'image': 'assets/symbols/meeting.png', 'size': 70.0}, 
+    {'image': 'assets/symbols/add-user.png', 'size': 50.0}, 
   ];
 
   final List<Map<String, dynamic>> userItems = [];

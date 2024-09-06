@@ -3,6 +3,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vtest/onboarding_screen.dart';
 import 'user_provider.dart';
 import 'home_page.dart';
 
@@ -14,20 +15,7 @@ class LoginPage extends StatelessWidget {
         title: Text("Login via QR Code",style:TextStyle(color:Colors.white)),
         backgroundColor: Color(0xFF8AAAE5), // Enhanced color
       ),
-      body: Center(
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF8AAAE5),
-            foregroundColor:Colors.white, // Enhanced color
-          ),
-          child: Text('Scan QR Code',style:TextStyle(color:Colors.white)),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => QRScannerPage()),
-            );
-          },
-        ),
-      ),
+      body: OnboardingScreen(),
     );
   }
 }
