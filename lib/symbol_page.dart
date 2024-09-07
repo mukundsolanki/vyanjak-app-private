@@ -12,19 +12,19 @@ class SymbolPage extends StatefulWidget {
 class _SymbolPageState extends State<SymbolPage> {
   final List<Map<String, dynamic>> items = [
     {'image': 'assets/symbols/medicine.png', 'size': 70.0}, 
-    {'image': 'assets/symbols/bus.png', 'size': 70.0}, 
+    {'image': 'assets/symbols/bus.png', 'size': 60.0}, 
     {'image': 'assets/symbols/guard.png', 'size': 80.0}, 
     {'image': 'assets/symbols/teacher.png', 'size': 85.0}, 
     {'image': 'assets/symbols/peon.png', 'size': 80.0},
     {'image': 'assets/symbols/food.png', 'size': 60.0}, 
-    {'image': 'assets/symbols/dean.png', 'size': 70.0}, 
-    {'image': 'assets/symbols/policeman.png', 'size': 70.0}, 
+    {'image': 'assets/symbols/dean.png', 'size': 60.0}, 
+    {'image': 'assets/symbols/policeman.png', 'size': 60.0}, 
     {'image': 'assets/symbols/one.png', 'size': 40.0}, 
     {'image': 'assets/symbols/two.png', 'size': 40.0}, 
     {'image': 'assets/symbols/three.png', 'size': 40.0}, 
     {'image': 'assets/symbols/four.png', 'size': 40.0},
     {'image': 'assets/symbols/meeting.png', 'size': 70.0}, 
-    {'image': 'assets/symbols/add-user.png', 'size': 50.0}, 
+    {'image': 'assets/symbols/add-user.png', 'size': 30.0}, 
   ];
 
   final List<Map<String, dynamic>> userItems = [];
@@ -32,12 +32,13 @@ class _SymbolPageState extends State<SymbolPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, 
       body: Padding(
-        padding: const EdgeInsets.all(12.0), 
+        padding: const EdgeInsets.all(10.0), 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 16.0),
+            //const SizedBox(height: 16.0),
             Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

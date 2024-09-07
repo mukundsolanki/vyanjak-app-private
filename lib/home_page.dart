@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
+      
       body: Stack(
         children: [
           // Gradient background color
@@ -48,15 +49,15 @@ class _HomePageState extends State<HomePage> {
             left: 0,
             right: 0,
             child: Container(
-              height: 150, // Height for the AppBar
+              height: 180, // Height for the AppBar
               decoration: BoxDecoration(
                 color: Color(0xFF8AAAE5),
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
+                  bottomLeft: Radius.circular(40),
+                  bottomRight: Radius.circular(40),
                 ),
               ),
-              padding: const EdgeInsets.fromLTRB(16, 20, 16, 0), // Padding for content inside AppBar
+              padding: const EdgeInsets.fromLTRB(20, 42, 16, 0), // Padding for content inside AppBar
               child:Column(
                 crossAxisAlignment:CrossAxisAlignment.start,
                 children:[ Row(
@@ -83,13 +84,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 10.0), 
+              SizedBox(height: 12.0), 
                   Text(
                     _pageTitles[_currentIndex] ?? '',
                     style: TextStyle(
                       color: Colors.white70,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 19,
+                     
                     ),
                   ),
               ]
@@ -99,14 +100,17 @@ class _HomePageState extends State<HomePage> {
           ),
           // Body content
           Positioned(
-            top: 120, // Position the body content below the AppBar
-            left: 16,
-            right: 16,
-            bottom: 0,
+            top: 140, // Position the body content below the AppBar
+            left: 15,
+            right: 15,
+            bottom: 13,
             child: ClipRRect(
+              
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(40),
-                topRight: Radius.circular(40),
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
               ),
               child: Container(
                 color: Colors.white,
@@ -128,7 +132,7 @@ class _HomePageState extends State<HomePage> {
           },
           color: Color(0xFF8AAAE5),
           buttonBackgroundColor: Color(0xFF8AAAE5),
-          backgroundColor: Colors.transparent,
+          backgroundColor: Color(0xFFB0C4DE),
           animationCurve: Curves.easeInOut,
           animationDuration: const Duration(milliseconds: 500),
           items: const <Widget>[

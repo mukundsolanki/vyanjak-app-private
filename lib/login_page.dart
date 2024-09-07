@@ -11,10 +11,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Login via QR Code",style:TextStyle(color:Colors.white)),
-        backgroundColor: Color(0xFF8AAAE5), // Enhanced color
-      ),
+    
       body: OnboardingScreen(),
     );
   }
@@ -32,7 +29,7 @@ class _QRScannerPageState extends State<QRScannerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Scan QR Code"),
+        title: Text("Scan QR Code",style: TextStyle(color: Colors.white),),
         backgroundColor: Color(0xFF8AAAE5), // Enhanced color
         actions: [
           IconButton(

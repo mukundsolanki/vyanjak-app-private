@@ -38,6 +38,7 @@ class _CallPageState extends State<CallPage> {
   void _showAddPeopleBottomSheet() {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (context) {
         return AddPeopleBottomSheet(
           onAdd: (name, ip) {
@@ -54,9 +55,9 @@ class _CallPageState extends State<CallPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
+       backgroundColor: Colors.white, 
       body: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(10.0),
         child: people.isEmpty
             ? Center(
                 child: Text(
@@ -84,18 +85,18 @@ class _CallPageState extends State<CallPage> {
 
   Widget _buildCallCard(String name, String ip) {
     return Card(
-      elevation: 6.0, // Increased elevation for better shadow
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      elevation: 4.0, // Increased elevation for better shadow
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 6.0), // More space between cards
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0), // Rounded corners
       ),
       color: Colors.white, // Card background color
       child: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0), // Reduced padding for less height
         child: Row(
           children: [
             CircleAvatar(
-              radius: 24.0,
+              radius: 22.0,
               backgroundColor: Color(0xFF8AAAE5), // Light blue background
               child: Text(
                 name.isNotEmpty ? name[0] : '?',
@@ -113,12 +114,12 @@ class _CallPageState extends State<CallPage> {
                       Text(
                         name,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF227C9D), // Darker blue color
                         ),
                       ),
-                      SizedBox(height: 8.0),
+                      SizedBox(height: 4.0), // Reduced space between text elements
                       Row(
                         children: [
                           Icon(Icons.circle, color: Colors.green, size: 12.0),
@@ -129,7 +130,7 @@ class _CallPageState extends State<CallPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 8.0),
+                      SizedBox(height: 4.0), // Reduced space between text elements
                       Text(
                         'IP: $ip',
                         style: TextStyle(color: Colors.grey),

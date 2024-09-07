@@ -50,11 +50,20 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return MaterialApp(
-        home: Scaffold(
-          body: Center(child: CircularProgressIndicator()),
+      return const Scaffold(
+      backgroundColor: Color(0xFF8AAAE5), 
+      body: Center(
+        child: Text(
+          'Vyanjak',
+          style: TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
-      );
+      ),
+    );
+      
     }
     return MaterialApp(
       home: _isLoggedIn ? HomePage() : LoginPage(),

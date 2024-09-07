@@ -73,6 +73,9 @@ flutter:
     - assets/intro/welcome.png
     - assets/intro/device.png
     - assets/intro/scan.png
+    - assets/intro/videocall.png
+    - assets/intro/videomail.png
+    - assets/intro/notif.png
     - assets/symbols/bus.png
     - assets/symbols/four.png
     - assets/symbols/one.png

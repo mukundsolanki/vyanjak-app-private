@@ -19,7 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      // Gradient background
+       backgroundColor: Colors.white, 
       body: Container(
         
         child: Padding(
@@ -27,7 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
               Column(
                 children:[
                   Row(
@@ -85,8 +85,8 @@ class _SettingsPageState extends State<SettingsPage> {
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
-              blurRadius: 6.0,
-              offset: Offset(0, 4),
+              blurRadius: 4.0,
+              offset: Offset(0, 7),
             ),
           ],
         ),
@@ -97,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
               backgroundColor: Color(0xFF8AAAE5), // Light blue background
               child: Icon(icon, color: Colors.white),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Text(
               title,
               style: TextStyle(
@@ -105,7 +105,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: Color(0xFF227C9D), // Darker blue for text
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 5),
             Text(
               subtitle,
               style: TextStyle(
