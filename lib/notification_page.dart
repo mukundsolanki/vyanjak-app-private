@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:convert'; // To decode JSON
+import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'video_player_page.dart';  // Import the new file
+import 'video_player_page.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -22,7 +22,8 @@ class _NotificationPageState extends State<NotificationPage> {
 
   Future<void> _fetchDataFromApi() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.29.192:5000/api/notifications'));
+      final response = await http
+          .get(Uri.parse('http://192.168.29.192:5000/api/notifications'));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         setState(() {
@@ -88,9 +89,12 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Colors.white, 
+      backgroundColor: Color(0xffF9F9FB),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator(color: const Color(0xFF8AAAE5),))
+          ? Center(
+              child: CircularProgressIndicator(
+              color: const Color.fromARGB(255, 16, 16, 16),
+            ))
           : ListView.builder(
               itemCount: _notifications.length,
               itemBuilder: (context, index) {
@@ -121,13 +125,18 @@ class _NotificationPageState extends State<NotificationPage> {
                     ),
                   ),
                   child: Card(
-                    elevation: 4,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    elevation: 0.0,
                     margin: EdgeInsets.all(10),
                     child: ListTile(
-                      leading: Icon(Icons.notifications, color: Colors.blue),
-                      title: Text(notification['name'], style: TextStyle(color: Colors.blue)),
-                      subtitle: Text('Tap to play video', style: TextStyle(color: Colors.blue)),
-                      trailing: Icon(Icons.play_circle_filled, color: Colors.blue),
+                      leading:
+                          Icon(Icons.notifications, color: Color(0xff111111)),
+                      title: Text(notification['name'],
+                          style: TextStyle(color: Color(0xff111111))),
+                      subtitle: Text('Tap to play video',
+                          style: TextStyle(color: Color(0xff111111))),
+                      trailing: Icon(Icons.play_circle_filled,
+                          color: Color(0xff111111)),
                       onTap: () => _playVideo(notification['video']),
                     ),
                   ),

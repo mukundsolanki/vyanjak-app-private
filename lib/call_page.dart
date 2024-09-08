@@ -55,7 +55,7 @@ class _CallPageState extends State<CallPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Colors.white, 
+      backgroundColor: Color(0xffF9F9FB),
       body: Container(
         padding: EdgeInsets.all(10.0),
         child: people.isEmpty
@@ -63,7 +63,7 @@ class _CallPageState extends State<CallPage> {
                 child: Text(
                   'No one to call',
                   style: TextStyle(
-                    color: Color(0xFF8AAAE5),
+                    color: Color.fromARGB(255, 10, 10, 10),
                     fontSize: 18,
                   ),
                 ),
@@ -77,30 +77,30 @@ class _CallPageState extends State<CallPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddPeopleBottomSheet,
-        backgroundColor: Color(0xFF8AAAE5), // Light blue color
-        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: Color.fromARGB(255, 1, 1, 1),
+        child: Icon(Icons.add, color: Color(0xffBFFF6D)),
       ),
     );
   }
 
   Widget _buildCallCard(String name, String ip) {
     return Card(
-      elevation: 4.0, // Increased elevation for better shadow
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 6.0), // More space between cards
+      elevation: 0,
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 6.0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0), // Rounded corners
+        borderRadius: BorderRadius.circular(12.0),
       ),
-      color: Colors.white, // Card background color
+      color: Colors.white,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0), // Reduced padding for less height
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
         child: Row(
           children: [
             CircleAvatar(
               radius: 22.0,
-              backgroundColor: Color(0xFF8AAAE5), // Light blue background
+              backgroundColor: Color.fromARGB(255, 9, 9, 9),
               child: Text(
                 name.isNotEmpty ? name[0] : '?',
-                style: TextStyle(color: Colors.white, fontSize: 20.0),
+                style: TextStyle(color: Color(0xffBFFF6D), fontSize: 25.0),
               ),
             ),
             SizedBox(width: 16.0),
@@ -116,10 +116,10 @@ class _CallPageState extends State<CallPage> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF227C9D), // Darker blue color
+                          color: Color.fromARGB(255, 10, 10, 10),
                         ),
                       ),
-                      SizedBox(height: 4.0), // Reduced space between text elements
+                      SizedBox(height: 4.0),
                       Row(
                         children: [
                           Icon(Icons.circle, color: Colors.green, size: 12.0),
@@ -130,7 +130,7 @@ class _CallPageState extends State<CallPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 4.0), // Reduced space between text elements
+                      SizedBox(height: 4.0),
                       Text(
                         'IP: $ip',
                         style: TextStyle(color: Colors.grey),
@@ -138,7 +138,8 @@ class _CallPageState extends State<CallPage> {
                     ],
                   ),
                   IconButton(
-                    icon: Icon(Icons.call, color: Color(0xFF227C9D), size: 30.0), // Darker blue color
+                    icon: Icon(Icons.call,
+                        color: Color.fromARGB(255, 8, 8, 8), size: 30.0),
                     onPressed: () {
                       Navigator.push(
                         context,

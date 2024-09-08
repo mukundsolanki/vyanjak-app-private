@@ -35,11 +35,12 @@ class _AddPeopleBottomSheetState extends State<AddPeopleBottomSheet> {
                   style: TextStyle(
                     fontSize: 29,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF227C9D), // Darker blue for text
+                    color: Color.fromARGB(255, 11, 11, 11),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.close, color: Color(0xFF227C9D)), // Darker blue for icon
+                  icon:
+                      Icon(Icons.close, color: Color.fromARGB(255, 10, 10, 10)),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -51,17 +52,20 @@ class _AddPeopleBottomSheetState extends State<AddPeopleBottomSheet> {
               controller: _nameController,
               decoration: InputDecoration(
                 labelText: 'Enter name',
-                labelStyle: TextStyle(color: Color(0xFF227C9D)), // Darker blue for label
+                labelStyle: TextStyle(color: Color.fromARGB(255, 11, 11, 11)),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF8AAAE5)), // Light blue for focused border
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(255, 10, 10, 10)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               ),
-              style: TextStyle(fontSize: 16.0, color: Color(0xFF227C9D)), // Darker blue for text
+              style: TextStyle(
+                  fontSize: 16.0, color: Color.fromARGB(255, 10, 10, 10)),
             ),
             SizedBox(height: 16.0),
             Row(
@@ -71,17 +75,21 @@ class _AddPeopleBottomSheetState extends State<AddPeopleBottomSheet> {
                     controller: _ipController,
                     decoration: InputDecoration(
                       labelText: 'Enter IP Address',
-                      labelStyle: TextStyle(color: Color(0xFF227C9D)), // Darker blue for label
+                      labelStyle:
+                          TextStyle(color: Color.fromARGB(255, 10, 10, 10)),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF8AAAE5)), // Light blue for focused border
+                        borderSide:
+                            BorderSide(color: Color.fromARGB(255, 12, 12, 12)),
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 12.0),
                     ),
-                    style: TextStyle(fontSize: 16.0, color: Color(0xFF227C9D)), // Darker blue for text
+                    style: TextStyle(
+                        fontSize: 16.0, color: Color.fromARGB(255, 12, 12, 12)),
                   ),
                 ),
                 SizedBox(width: 8.0),
@@ -97,27 +105,26 @@ class _AddPeopleBottomSheetState extends State<AddPeopleBottomSheet> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero, // Remove default padding
+                    padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    // Add elevation for shadow
                   ),
                   child: Ink(
                     decoration: BoxDecoration(
-                     color: Color(0xFF8AAAE5),
+                      color: Color.fromARGB(255, 10, 10, 10),
                       borderRadius: BorderRadius.circular(8.0),
-                      
                     ),
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 12.0),
                       alignment: Alignment.center,
                       child: Text(
                         'Add',
                         style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Color(0xffBFFF6D),
                         ),
                       ),
                     ),

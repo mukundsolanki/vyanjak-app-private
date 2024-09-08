@@ -11,20 +11,20 @@ class SymbolPage extends StatefulWidget {
 
 class _SymbolPageState extends State<SymbolPage> {
   final List<Map<String, dynamic>> items = [
-    {'image': 'assets/symbols/medicine.png', 'size': 70.0}, 
-    {'image': 'assets/symbols/bus.png', 'size': 60.0}, 
-    {'image': 'assets/symbols/guard.png', 'size': 80.0}, 
-    {'image': 'assets/symbols/teacher.png', 'size': 85.0}, 
+    {'image': 'assets/symbols/medicine.png', 'size': 70.0},
+    {'image': 'assets/symbols/bus.png', 'size': 60.0},
+    {'image': 'assets/symbols/guard.png', 'size': 80.0},
+    {'image': 'assets/symbols/teacher.png', 'size': 85.0},
     {'image': 'assets/symbols/peon.png', 'size': 80.0},
-    {'image': 'assets/symbols/food.png', 'size': 60.0}, 
-    {'image': 'assets/symbols/dean.png', 'size': 60.0}, 
-    {'image': 'assets/symbols/policeman.png', 'size': 60.0}, 
-    {'image': 'assets/symbols/one.png', 'size': 40.0}, 
-    {'image': 'assets/symbols/two.png', 'size': 40.0}, 
-    {'image': 'assets/symbols/three.png', 'size': 40.0}, 
+    {'image': 'assets/symbols/food.png', 'size': 60.0},
+    {'image': 'assets/symbols/dean.png', 'size': 60.0},
+    {'image': 'assets/symbols/policeman.png', 'size': 60.0},
+    {'image': 'assets/symbols/one.png', 'size': 40.0},
+    {'image': 'assets/symbols/two.png', 'size': 40.0},
+    {'image': 'assets/symbols/three.png', 'size': 40.0},
     {'image': 'assets/symbols/four.png', 'size': 40.0},
-    {'image': 'assets/symbols/meeting.png', 'size': 70.0}, 
-    {'image': 'assets/symbols/add-user.png', 'size': 30.0}, 
+    {'image': 'assets/symbols/meeting.png', 'size': 70.0},
+    {'image': 'assets/symbols/add-user.png', 'size': 30.0},
   ];
 
   final List<Map<String, dynamic>> userItems = [];
@@ -32,21 +32,20 @@ class _SymbolPageState extends State<SymbolPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, 
+      backgroundColor: Color(0xffF9F9FB),
       body: Padding(
-        padding: const EdgeInsets.all(10.0), 
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //const SizedBox(height: 16.0),
             Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  crossAxisSpacing: 10.0, 
-                  mainAxisSpacing: 10.0, 
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
                 ),
-                itemCount: items.length + userItems.length, 
+                itemCount: items.length + userItems.length,
                 itemBuilder: (context, index) {
                   if (index < items.length) {
                     return _buildGridItem(index, items);
@@ -68,7 +67,7 @@ class _SymbolPageState extends State<SymbolPage> {
         borderRadius: BorderRadius.circular(15.0),
       ),
       color: Colors.white,
-      elevation: 6.0,
+      elevation: 0.0,
       margin: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () async {
@@ -76,15 +75,15 @@ class _SymbolPageState extends State<SymbolPage> {
             await _addUser();
           }
         },
-        splashColor: Colors.deepPurple.withAlpha(30),
+        splashColor: const Color.fromARGB(255, 255, 255, 255).withAlpha(30),
         borderRadius: BorderRadius.circular(15.0),
         child: Padding(
-          padding: const EdgeInsets.all(16.0), 
+          padding: const EdgeInsets.all(16.0),
           child: Center(
             child: itemList == items
                 ? Image.asset(
                     itemList[index]['image'],
-                    height: itemList[index]['size'], 
+                    height: itemList[index]['size'],
                   )
                 : CircleAvatar(
                     backgroundImage: FileImage(File(itemList[index]['image'])),

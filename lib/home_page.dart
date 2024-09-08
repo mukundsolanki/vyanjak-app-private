@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     CallPage(),
     SettingsPage(),
   ];
-   final Map<int, String> _pageTitles = {
+  final Map<int, String> _pageTitles = {
     0: 'Select a Symbol to Connect',
     1: 'Notifications',
     2: 'Calls',
@@ -35,77 +35,72 @@ class _HomePageState extends State<HomePage> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      
       body: Stack(
         children: [
-          // Gradient background color
           Container(
-            color:Color(0xFFB0C4DE),
- 
-),
-          // Positioned AppBar
+            color: Color.fromARGB(255, 255, 255, 255),
+          ),
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             child: Container(
-              height: 180, // Height for the AppBar
-              decoration: BoxDecoration(
-                color: Color(0xFF8AAAE5),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(40),
-                  bottomRight: Radius.circular(40),
+                height: 180,
+                decoration: BoxDecoration(
+                  color: Color(0xffBFFF6D),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
                 ),
-              ),
-              padding: const EdgeInsets.fromLTRB(20, 42, 16, 0), // Padding for content inside AppBar
-              child:Column(
-                crossAxisAlignment:CrossAxisAlignment.start,
-                children:[ Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Vyanjak',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.logout, color: Colors.white),
-                    onPressed: () async {
-                      userProvider.logout();
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      await prefs.clear();
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 12.0), 
-                  Text(
-                    _pageTitles[_currentIndex] ?? '',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 19,
-                     
-                    ),
-                  ),
-              ]
-              )
-              
-            ),
+                padding: const EdgeInsets.fromLTRB(
+                    20, 42, 16, 0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Vyanjak',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.logout, color: Colors.white),
+                            onPressed: () async {
+                              userProvider.logout();
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.clear();
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12.0),
+                      Text(
+                        _pageTitles[_currentIndex] ?? '',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 19,
+                        ),
+                      ),
+                    ])),
           ),
           // Body content
           Positioned(
-            top: 140, // Position the body content below the AppBar
+            top: 140,
             left: 15,
             right: 15,
             bottom: 13,
             child: ClipRRect(
-              
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
@@ -121,7 +116,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       bottomNavigationBar: Container(
-        height: 60, // Height for bottom navigation bar
+        height: 60,
         child: CurvedNavigationBar(
           index: _currentIndex,
           height: 60,
@@ -130,9 +125,9 @@ class _HomePageState extends State<HomePage> {
               _currentIndex = index;
             });
           },
-          color: Color(0xFF8AAAE5),
-          buttonBackgroundColor: Color(0xFF8AAAE5),
-          backgroundColor: Color(0xFFB0C4DE),
+          color: Color(0xff111111),
+          buttonBackgroundColor: Color(0xffBFFF6D),
+          backgroundColor: Colors.white,
           animationCurve: Curves.easeInOut,
           animationDuration: const Duration(milliseconds: 500),
           items: const <Widget>[

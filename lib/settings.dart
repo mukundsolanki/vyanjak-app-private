@@ -10,7 +10,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  // Hardcoded battery and connectivity status
   final String batteryStatus = "80%";
   final String connectivityStatus = "WiFi";
 
@@ -19,20 +18,18 @@ class _SettingsPageState extends State<SettingsPage> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-       backgroundColor: Colors.white, 
+      backgroundColor: Color(0xffF9F9FB),
       body: Container(
-        
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                    const SizedBox(height: 20),
-              Column(
-                children:[
-                  Row(
+              const SizedBox(height: 20),
+              Column(children: [
+                Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children:[
+                    children: [
                       _buildSquareCard(
                         icon: Icons.person,
                         title: 'User',
@@ -43,26 +40,23 @@ class _SettingsPageState extends State<SettingsPage> {
                         title: 'Role',
                         subtitle: userProvider.role,
                       ),
-                    ]
-                  ),
-                   Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildSquareCard(
-                    icon: Icons.battery_full,
-                    title: 'Battery',
-                    subtitle: batteryStatus,
-                  ),
-                  _buildSquareCard(
-                    icon: Icons.wifi,
-                    title: 'Connectivity',
-                    subtitle: connectivityStatus,
-                  ),
-                ],
-              ),
-                ]
-              )
-             
+                    ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildSquareCard(
+                      icon: Icons.battery_full,
+                      title: 'Battery',
+                      subtitle: batteryStatus,
+                    ),
+                    _buildSquareCard(
+                      icon: Icons.wifi,
+                      title: 'Connectivity',
+                      subtitle: connectivityStatus,
+                    ),
+                  ],
+                ),
+              ])
             ],
           ),
         ),
@@ -81,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16.0), // Rounded corners
+          borderRadius: BorderRadius.circular(16.0),
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
@@ -94,22 +88,22 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             CircleAvatar(
-              backgroundColor: Color(0xFF8AAAE5), // Light blue background
-              child: Icon(icon, color: Colors.white),
+              backgroundColor: Color.fromARGB(255, 10, 10, 10),
+              child: Icon(icon, color: Color(0xffBFFF6D)),
             ),
             const SizedBox(height: 10),
             Text(
               title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF227C9D), // Darker blue for text
+                color: Color.fromARGB(255, 10, 10, 10),
               ),
             ),
             const SizedBox(height: 5),
             Text(
               subtitle,
               style: TextStyle(
-                color: Color(0xFF227C9D), // Darker blue for subtitle
+                color: Color.fromARGB(255, 10, 10, 10),
               ),
             ),
           ],
