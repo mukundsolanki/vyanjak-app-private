@@ -105,6 +105,10 @@ async def offer(request):
     answer = await pc.createAnswer()
     await pc.setLocalDescription(answer)
 
+    # Create hello.txt file
+    with open("hello.txt", "w") as file:
+        file.write("System working, successfully receiving stream from flutter app")
+
     return web.Response(
         content_type="application/json",
         text=json.dumps(

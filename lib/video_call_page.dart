@@ -14,8 +14,10 @@ class VideoCallPage extends StatefulWidget {
 
 class _VideoCallPageState extends State<VideoCallPage> {
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+  RTCVideoRenderer _localRenderer = RTCVideoRenderer(); 
   RTCPeerConnection? _peerConnection;
   bool _isCallActive = false;
+  MediaStream? _localStream;
 
   @override
   void initState() {
@@ -26,12 +28,42 @@ class _VideoCallPageState extends State<VideoCallPage> {
 
   @override
   void dispose() {
+    _localRenderer.dispose();
     _remoteRenderer.dispose();
+    _localStream?.dispose();
+    _peerConnection?.dispose();
     super.dispose();
   }
 
   void _initializeRenderers() async {
     await _remoteRenderer.initialize();
+    await _localRenderer.initialize();
+    await _startLocalStream(); // Start local stream
+  }
+
+  Future<void> _startLocalStream() async {
+    final mediaDevices = await navigator.mediaDevices.enumerateDevices();
+    final hasCamera = mediaDevices.any((device) => device.kind == 'videoinput');
+    
+    if (hasCamera) {
+      final constraints = {
+        'audio': true,
+        'video': {
+          'facingMode': 'user',
+          'width': {'ideal': 1280},
+          'height': {'ideal': 720},
+        },
+      };
+
+      _localStream = await navigator.mediaDevices.getUserMedia(constraints);
+      _localRenderer.srcObject = _localStream;
+
+      if (_peerConnection != null) {
+        _localStream?.getTracks().forEach((track) {
+          _peerConnection!.addTrack(track, _localStream!);
+        });
+      }
+    }
   }
 
   Future<void> _startCall() async {
@@ -123,6 +155,10 @@ class _VideoCallPageState extends State<VideoCallPage> {
             child: Container(
               child: RTCVideoView(_remoteRenderer),
             ),
+          ),
+          Container(
+            height: 150, // Adjust height as needed
+            child: RTCVideoView(_localRenderer, mirror: true), // Display local video
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
