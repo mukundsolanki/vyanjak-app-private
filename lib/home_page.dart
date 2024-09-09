@@ -1,13 +1,19 @@
+import 'dart:convert'; // Import this to handle JSON
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:vtest/call_page.dart';
-import 'package:vtest/notification_page.dart';
-import 'package:vtest/settings.dart';
+import 'package:flutter/scheduler.dart'; // Import this to use SchedulerBinding
+
+import 'call_page.dart';
+import 'notification_page.dart';
+import 'settings.dart';
 import 'user_provider.dart';
 import 'login_page.dart';
 import 'symbol_page.dart';
+// import 'handle_call.dart'; // Import the HandleCall screen
+import 'incoming_call_page.dart'; // Import the IncomingCallPage
 
 class HomePage extends StatefulWidget {
   @override
@@ -29,6 +35,51 @@ class _HomePageState extends State<HomePage> {
     2: 'Calls',
     3: 'Settings',
   };
+
+  @override
+  void initState() {
+    super.initState();
+    _startServer();
+  }
+
+  void _startServer() async {
+    HttpServer server = await HttpServer.bind(
+      InternetAddress.anyIPv4,
+      5500,
+    );
+    print("Server running on port 5500");
+
+    await for (HttpRequest request in server) {
+      if (request.uri.path == '/incoming_call' && request.method == 'POST') {
+        print("Incoming call request received");
+
+        String content = await utf8.decoder.bind(request).join();
+        Map<String, dynamic> data = jsonDecode(content);
+
+        String name = data['name'] ?? 'Unknown';
+        String ipAddress = data['ipaddress'] ?? 'Unknown';
+
+        request.response
+          ..statusCode = HttpStatus.ok
+          ..write("Call handled!")
+          ..close();
+
+        if (mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  IncomingCallPage(name: name, ipAddress: ipAddress),
+            ),
+          );
+        }
+      } else {
+        request.response
+          ..statusCode = HttpStatus.notFound
+          ..write("Not Found")
+          ..close();
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +104,7 @@ class _HomePageState extends State<HomePage> {
                     bottomRight: Radius.circular(40),
                   ),
                 ),
-                padding: const EdgeInsets.fromLTRB(
-                    20, 42, 16, 0),
+                padding: const EdgeInsets.fromLTRB(20, 42, 16, 0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

@@ -2,19 +2,20 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:http/http.dart' as http;
 
-class VideoCallPage extends StatefulWidget {
-  final String ipAddress; // Add an IP address parameter
+class IncomingConnect extends StatefulWidget {
+  final String ipAddress;
 
-  VideoCallPage({required this.ipAddress});
+  IncomingConnect({required this.ipAddress});
 
   @override
-  _VideoCallPageState createState() => _VideoCallPageState();
+  _IncomingConnectState createState() => _IncomingConnectState();
 }
 
-class _VideoCallPageState extends State<VideoCallPage> {
+class _IncomingConnectState extends State<IncomingConnect> {
   late RTCPeerConnection _peerConnection;
   final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
@@ -105,7 +106,6 @@ class _VideoCallPageState extends State<VideoCallPage> {
   }
 
   Future<void> _hangUp() async {
-    // Close the local stream and peer connection
     await _localStream?.dispose();
     await _peerConnection.close();
     _localRenderer.srcObject = null;
@@ -115,8 +115,7 @@ class _VideoCallPageState extends State<VideoCallPage> {
       _inCalling = false;
     });
 
-    // Pop the context and navigate back
-    Navigator.pop(context);
+    SystemNavigator.pop();
   }
 
   void _toggleLocalStream() {
@@ -159,7 +158,8 @@ class _VideoCallPageState extends State<VideoCallPage> {
                 ),
                 SizedBox(width: 8),
                 ElevatedButton(
-                  onPressed: _toggleLocalStream,
+                  onPressed:
+                      _toggleLocalStream,
                   child: Text(
                       _showLocalStream ? 'Hide My Camera' : 'Show My Camera'),
                 ),

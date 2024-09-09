@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vtest/bottom_model_sheet.dart';
 import 'package:vtest/video_call_page.dart';
-import 'package:vtest/video_call_page.dart';
 
 class CallPage extends StatefulWidget {
   @override
@@ -145,8 +144,8 @@ class _CallPageState extends State<CallPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                         // builder: (context) => VideoCallPage(ipAddress: ip),
-                         builder: (context)=>VideoCallPage(ipAddress: ip),
+                          // builder: (context) => VideoCallPage(ipAddress: ip),
+                          builder: (context) => VideoCallPage(ipAddress: ip),
                         ),
                       );
                     },
