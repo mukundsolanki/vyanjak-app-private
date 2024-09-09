@@ -4,6 +4,8 @@ import json
 import logging
 import os
 import platform
+import cv2
+import numpy as np
 import ssl
 
 from aiohttp import web
@@ -16,6 +18,27 @@ ROOT = os.path.dirname(__file__)
 
 relay = None
 webcam = None
+
+async def display_video(video_track):
+    cv2.namedWindow('Received Video Stream', cv2.WINDOW_NORMAL)
+
+    async def frame_generator():
+        while True:
+            frame = await video_track.recv()
+            if frame is None:
+                break
+            frame = frame.to_ndarray(format="bgr24")  # Convert to numpy array (OpenCV format)
+            yield frame
+
+    async def show_frames():
+        async for frame in frame_generator():
+            cv2.imshow('Received Video Stream', frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+        cv2.destroyAllWindows()
+
+    # Run the show_frames coroutine in the event loop
+    await show_frames()
 
 
 def create_local_tracks(play_from, decode):
@@ -66,7 +89,6 @@ async def javascript(request):
     content = open(os.path.join(ROOT, "client.js"), "r").read()
     return web.Response(content_type="application/javascript", text=content)
 
-
 async def offer(request):
     params = await request.json()
     offer = RTCSessionDescription(sdp=params["sdp"], type=params["type"])
@@ -81,7 +103,22 @@ async def offer(request):
             await pc.close()
             pcs.discard(pc)
 
-    # open media source
+    # Log when a track is added
+    @pc.on("track")
+    def on_track(track):
+        print(f"Track received: {track.kind}")
+        if track.kind == "video":
+            print("Receiving video stream...")
+            asyncio.create_task(display_video(track))
+        elif track.kind == "audio":
+            print("Receiving audio stream...")
+
+        # Listen for when the track ends
+        @track.on("ended")
+        async def on_ended():
+            print(f"Track {track.kind} ended")
+
+    # Open media source
     audio, video = create_local_tracks(
         args.play_from, decode=not args.play_without_decoding
     )
@@ -105,16 +142,18 @@ async def offer(request):
     answer = await pc.createAnswer()
     await pc.setLocalDescription(answer)
 
-    # Create hello.txt file
+    # Create hello.txt file for confirmation
     with open("hello.txt", "w") as file:
         file.write("System working, successfully receiving stream from flutter app")
 
+    print("Sending answer back to client.")
     return web.Response(
         content_type="application/json",
         text=json.dumps(
             {"sdp": pc.localDescription.sdp, "type": pc.localDescription.type}
         ),
     )
+
 
 
 pcs = set()

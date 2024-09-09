@@ -12,7 +12,7 @@ class WebRTCClient extends StatefulWidget {
 
 class _WebRTCClientState extends State<WebRTCClient> {
   late RTCPeerConnection _peerConnection;
-  final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+//  final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   MediaStream? _localStream;
   bool _inCalling = false;
@@ -25,7 +25,7 @@ class _WebRTCClientState extends State<WebRTCClient> {
   }
 
   Future<void> _initializeRenderers() async {
-    await _localRenderer.initialize();
+ //   await _localRenderer.initialize();
     await _remoteRenderer.initialize();
   }
 
@@ -55,7 +55,7 @@ class _WebRTCClientState extends State<WebRTCClient> {
   });
 
   // Display local stream
-  _localRenderer.srcObject = _localStream;
+  //_localRenderer.srcObject = _localStream;
 
   // Handle incoming stream
   _peerConnection.onTrack = (event) {
@@ -100,7 +100,7 @@ class _WebRTCClientState extends State<WebRTCClient> {
   Future<void> _hangUp() async {
     await _localStream?.dispose();
     await _peerConnection.close();
-    _localRenderer.srcObject = null;
+   // _localRenderer.srcObject = null;
     _remoteRenderer.srcObject = null;
     setState(() {
       _inCalling = false;
@@ -109,7 +109,7 @@ class _WebRTCClientState extends State<WebRTCClient> {
 
   @override
   void dispose() {
-    _localRenderer.dispose();
+   // _localRenderer.dispose();
     _remoteRenderer.dispose();
     super.dispose();
   }
@@ -123,9 +123,9 @@ class _WebRTCClientState extends State<WebRTCClient> {
       body: Center(
         child: Column(
           children: [
-            Expanded(
-              child: RTCVideoView(_localRenderer, mirror: true),
-            ),
+            // Expanded(
+            //   child: RTCVideoView(_localRenderer, mirror: true),
+            // ),
             Expanded(
               child: RTCVideoView(_remoteRenderer),
             ),
