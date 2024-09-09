@@ -1,10 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class VideoCallPage extends StatefulWidget {
-  final String ipAddress;
+  final String ipAddress;  // Add an IP address parameter
 
   VideoCallPage({required this.ipAddress});
 
@@ -13,92 +15,58 @@ class VideoCallPage extends StatefulWidget {
 }
 
 class _VideoCallPageState extends State<VideoCallPage> {
-  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
-  RTCVideoRenderer _localRenderer = RTCVideoRenderer(); 
-  RTCPeerConnection? _peerConnection;
-  bool _isCallActive = false;
+  late RTCPeerConnection _peerConnection;
+  final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   MediaStream? _localStream;
+  bool _inCalling = false;
+  late String signalingServerUrl;
+  bool _showLocalStream = false;  
 
   @override
   void initState() {
     super.initState();
+    signalingServerUrl = 'http://${widget.ipAddress}:8080/offer';
     _initializeRenderers();
-    _startCall();
+    _createPeerConnection();
   }
 
-  @override
-  void dispose() {
-    _localRenderer.dispose();
-    _remoteRenderer.dispose();
-    _localStream?.dispose();
-    _peerConnection?.dispose();
-    super.dispose();
-  }
-
-  void _initializeRenderers() async {
-    await _remoteRenderer.initialize();
+  Future<void> _initializeRenderers() async {
     await _localRenderer.initialize();
-    await _startLocalStream(); // Start local stream
+    await _remoteRenderer.initialize();
   }
 
-  Future<void> _startLocalStream() async {
-    final mediaDevices = await navigator.mediaDevices.enumerateDevices();
-    final hasCamera = mediaDevices.any((device) => device.kind == 'videoinput');
-    
-    if (hasCamera) {
-      final constraints = {
-        'audio': true,
-        'video': {
-          'facingMode': 'user',
-          'width': {'ideal': 1280},
-          'height': {'ideal': 720},
-        },
-      };
-
-      _localStream = await navigator.mediaDevices.getUserMedia(constraints);
-      _localRenderer.srcObject = _localStream;
-
-      if (_peerConnection != null) {
-        _localStream?.getTracks().forEach((track) {
-          _peerConnection!.addTrack(track, _localStream!);
-        });
-      }
-    }
-  }
-
-  Future<void> _startCall() async {
-    _peerConnection = await _createPeerConnection();
-
-    _handleSignaling();
-  }
-
-  Future<RTCPeerConnection> _createPeerConnection() async {
+  Future<void> _createPeerConnection() async {
     final Map<String, dynamic> configuration = {
-      'iceServers': [
-        {
-          'urls': 'stun:stun.l.google.com:19302',
-        },
+      "iceServers": [
+        {"urls": "stun:stun.l.google.com:19302"},
       ]
     };
 
-    final Map<String, dynamic> offerSdpConstraints = {
-      'mandatory': {
-        'OfferToReceiveAudio': true,
-        'OfferToReceiveVideo': true,
-      },
-      'optional': [],
+    _peerConnection = await createPeerConnection(configuration);
+
+    // Log ICE connection state changes
+    _peerConnection.onIceConnectionState = (RTCIceConnectionState state) {
+      print("ICE connection state changed: $state");
     };
 
-    RTCPeerConnection peerConnection =
-        await createPeerConnection(configuration, offerSdpConstraints);
+    // Get user media (camera and microphone)
+    _localStream = await navigator.mediaDevices.getUserMedia({
+      'video': true,
+      'audio': true,
+    });
 
-    peerConnection.onIceCandidate = (RTCIceCandidate candidate) {
-      if (candidate != null) {
-        _sendIceCandidateToBackend(candidate);
-      }
-    };
+    // Add local stream to peer connection
+    _localStream!.getTracks().forEach((track) {
+      _peerConnection.addTrack(track, _localStream!);
+    });
 
-    peerConnection.onTrack = (RTCTrackEvent event) {
+    // Display local stream
+    _localRenderer.srcObject = _localStream;
+
+    // Handle incoming stream
+    _peerConnection.onTrack = (event) {
+      print("Received remote track: ${event.track.kind}");
       if (event.track.kind == 'video') {
         setState(() {
           _remoteRenderer.srcObject = event.streams[0];
@@ -106,83 +74,97 @@ class _VideoCallPageState extends State<VideoCallPage> {
       }
     };
 
-    return peerConnection;
-  }
+    // Create an offer and send it to the signaling server
+    RTCSessionDescription offer = await _peerConnection.createOffer();
+    await _peerConnection.setLocalDescription(offer);
 
-  void _handleSignaling() async {
-    RTCSessionDescription description = await _peerConnection!.createOffer();
-    await _peerConnection!.setLocalDescription(description);
+    print("Sending offer to the signaling server.");
 
-    var offer = {
-      'sdp': description.sdp,
-      'type': description.type,
-    };
+    // Send offer to the signaling server
     var response = await http.post(
-      Uri.parse('http://${widget.ipAddress}:8080/offer'),
-      body: json.encode(offer),
+      Uri.parse(signalingServerUrl),
       headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'sdp': offer.sdp,
+        'type': offer.type,
+      }),
     );
 
-    var answer = jsonDecode(response.body);
-    await _peerConnection!.setRemoteDescription(
-      RTCSessionDescription(answer['sdp'], answer['type']),
-    );
+    if (response.statusCode == 200) {
+      // Handle the answer from the server
+      var responseData = json.decode(response.body);
+      RTCSessionDescription answer = RTCSessionDescription(
+        responseData['sdp'],
+        responseData['type'],
+      );
+      print("Received answer from signaling server.");
+      await _peerConnection.setRemoteDescription(answer);
+    } else {
+      print('Failed to connect to the signaling server.');
+    }
   }
 
-  void _sendIceCandidateToBackend(RTCIceCandidate candidate) async {
-    var iceCandidate = {
-      'candidate': candidate.candidate,
-      'sdpMid': candidate.sdpMid,
-      'sdpMLineIndex': candidate.sdpMLineIndex,
-    };
+  Future<void> _hangUp() async {
+    // Close the local stream and peer connection
+    await _localStream?.dispose();
+    await _peerConnection.close();
+    _localRenderer.srcObject = null;
+    _remoteRenderer.srcObject = null;
 
-    await http.post(
-      Uri.parse('http://${widget.ipAddress}:8080/ice-candidate'),
-      body: json.encode(iceCandidate),
-      headers: {'Content-Type': 'application/json'},
-    );
+    setState(() {
+      _inCalling = false;
+    });
+
+    // Pop the context and navigate back
+    Navigator.pop(context);
+  }
+
+  void _toggleLocalStream() {
+    setState(() {
+      _showLocalStream = !_showLocalStream;
+    });
+  }
+
+  @override
+  void dispose() {
+    _localRenderer.dispose();
+    _remoteRenderer.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Call with HOD'),
+        title: Text('Flutter WebRTC Demo'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
+      body: Center(
+        child: Column(
+          children: [
+            Expanded(
+              child: _showLocalStream ? RTCVideoView(_localRenderer, mirror: true) : Container(),  // Conditionally display local stream
+            ),
+            Expanded(
               child: RTCVideoView(_remoteRenderer),
             ),
-          ),
-          Container(
-            height: 150, // Adjust height as needed
-            child: RTCVideoView(_localRenderer, mirror: true), // Display local video
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-              ),
-              onPressed: () {
-                _hangUpCall();
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.call_end),
-              label: Text('Hang Up'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () => _hangUp(),  
+                  child: Text('Hang Up'),
+                ),
+                SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: _toggleLocalStream,  // Toggle local stream visibility
+                  child: Text(_showLocalStream ? 'Hide My Camera' : 'Show My Camera'),
+                ),
+              ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
-  }
-
-  void _hangUpCall() {
-    if (_peerConnection != null) {
-      _peerConnection!.close();
-    }
   }
 }
