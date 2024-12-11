@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'video_player_page.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -11,8 +10,6 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   List<dynamic> _notifications = [];
   bool _isLoading = true;
-  late Map<String, dynamic> _lastDeletedNotification;
-  late int _lastDeletedIndex;
 
   @override
   void initState() {
@@ -23,7 +20,7 @@ class _NotificationPageState extends State<NotificationPage> {
   Future<void> _fetchDataFromApi() async {
     try {
       final response = await http
-          .get(Uri.parse('http://192.168.29.192:5000/api/notifications'));
+          .get(Uri.parse('http://192.168.194.236:5000/api/notifications'));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         setState(() {
@@ -34,56 +31,37 @@ class _NotificationPageState extends State<NotificationPage> {
         throw Exception('Failed to load data');
       }
     } catch (e) {
+      print('Error fetching data: $e');
       setState(() {
         _isLoading = false;
       });
     }
   }
 
-  void _playVideo(String videoUrl) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => VideoPlayerPage(videoUrl: videoUrl),
-      ),
-    );
-  }
-
-  void _deleteNotification(int index) {
-    setState(() {
-      _lastDeletedNotification = _notifications[index];
-      _lastDeletedIndex = index;
-      _notifications.removeAt(index);
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            children: [
-              Expanded(child: Text('Notification deleted')),
-              SizedBox(width: 8),
-              TextButton(
-                child: Text('Undo'),
-                onPressed: () {
-                  _restoreNotification();
-                },
-              ),
-            ],
+  void _showNotificationDetails(
+      BuildContext context, String sender, String text, String time) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Message from $sender'),
+          content: SingleChildScrollView(
+            child: Text(
+              text,
+              style: TextStyle(fontSize: 16),
+            ),
           ),
-        ),
-        behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
-        backgroundColor: Colors.black87,
-      ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
     );
-  }
-
-  void _restoreNotification() {
-    setState(() {
-      _notifications.insert(_lastDeletedIndex, _lastDeletedNotification);
-    });
   }
 
   @override
@@ -99,45 +77,45 @@ class _NotificationPageState extends State<NotificationPage> {
               itemCount: _notifications.length,
               itemBuilder: (context, index) {
                 final notification = _notifications[index];
-                return Dismissible(
-                  key: Key(notification['name']),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    _deleteNotification(index);
-                  },
-                  background: Container(
-                    color: Colors.red,
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                final preview =
+                    notification['text'].split(' ').take(5).join(' ') +
+                        '...'; // Limit to a few words
+                return Card(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  elevation: 1.0,
+                  margin: EdgeInsets.all(10),
+                  child: ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    leading:
+                        Icon(Icons.notifications, color: Color(0xff111111)),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
-                          Icons.delete,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 20),
                         Text(
-                          'Delete',
-                          style: TextStyle(color: Colors.white),
+                          notification['sender'],
+                          style: TextStyle(
+                              color: Color(0xff111111),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          notification['time'],
+                          style: TextStyle(
+                              color: Color(0xff777777),
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic),
                         ),
                       ],
                     ),
-                  ),
-                  child: Card(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    elevation: 0.0,
-                    margin: EdgeInsets.all(10),
-                    child: ListTile(
-                      leading:
-                          Icon(Icons.notifications, color: Color(0xff111111)),
-                      title: Text(notification['name'],
-                          style: TextStyle(color: Color(0xff111111))),
-                      subtitle: Text('Tap to play video',
-                          style: TextStyle(color: Color(0xff111111))),
-                      trailing: Icon(Icons.play_circle_filled,
-                          color: Color(0xff111111)),
-                      onTap: () => _playVideo(notification['video']),
+                    subtitle: Text(
+                      preview,
+                      style: TextStyle(color: Color(0xff111111)),
+                    ),
+                    onTap: () => _showNotificationDetails(
+                      context,
+                      notification['sender'],
+                      notification['text'],
+                      notification['time'],
                     ),
                   ),
                 );
