@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
             child: Container(
                 height: 180,
                 decoration: BoxDecoration(
-                  color: Color(0xffBFFF6D),
+                  color: Color.fromARGB(255, 5, 120, 111),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(40),
                     bottomRight: Radius.circular(40),
@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                           const Text(
                             'Vyanjak',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Color(0xffc9fcc5),
                               fontSize: 26,
                               fontWeight: FontWeight.bold,
                             ),
@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage> {
             });
           },
           color: Color(0xff111111),
-          buttonBackgroundColor: Color(0xffBFFF6D),
+          buttonBackgroundColor: Color(0xff010101),
           backgroundColor: Colors.white,
           animationCurve: Curves.easeInOut,
           animationDuration: const Duration(milliseconds: 500),
